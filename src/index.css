@@ -230,6 +230,111 @@ button {
   transform: none;
 }
 
+/* ---------- Route Reload Progress Bar & Page Transition Motion ---------- */
+.route-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  z-index: 99999;
+  background: linear-gradient(90deg, var(--red-600), #F59E0B, var(--blue-600));
+  transform: translateX(-100%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+
+.route-progress-bar.active {
+  opacity: 1;
+  animation: routeSweep 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes routeSweep {
+  0% { transform: translateX(-100%); }
+  55% { transform: translateX(-15%); }
+  100% { transform: translateX(0%); opacity: 0; }
+}
+
+.page-transition-wrap {
+  animation: pageFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Skeleton Shimmer Placeholder for Slow Internet ---------- */
+.profile-cover,
+.life-media,
+.bento-item,
+.skeleton-placeholder {
+  position: relative;
+  background-color: #E2E8F0;
+  background-image: linear-gradient(
+    90deg,
+    rgba(226, 232, 240, 0.8) 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(226, 232, 240, 0.8) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Subtle float animation on institutional crest */
+@keyframes floatSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.avatar-circle {
+  animation: floatSubtle 4s ease-in-out infinite;
+}
+
+/* Light pulse glow on announcement bar */
+@keyframes pulseSubtle {
+  0%, 100% {
+    box-shadow: 0 4px 14px -3px rgba(15, 23, 42, 0.08), 0 0 0 1px rgba(220, 38, 38, 0.08);
+  }
+  50% {
+    box-shadow: 0 6px 20px -3px rgba(220, 38, 38, 0.18), 0 0 0 1.5px rgba(220, 38, 38, 0.2);
+  }
+}
+
+.hero-notice-banner {
+  animation: pulseSubtle 3.2s ease-in-out infinite;
+}
+
+/* Light button and card hover micro-motions */
+.btn:hover,
+.notice-link:hover,
+.route-tab:hover,
+.hero-feature-card:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active,
+.notice-link:active,
+.route-tab:active {
+  transform: translateY(0) scale(0.98);
+}
+
 /* =========================================================
    Navbar
    ========================================================= */

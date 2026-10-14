@@ -53,11 +53,18 @@ function parsePageFromHash() {
 
 function App() {
   const [currentPage, setCurrentPage] = useState(parsePageFromHash)
+  const [isNavigating, setIsNavigating] = useState(false)
   useReveal(currentPage)
+
+  const triggerTransition = () => {
+    setIsNavigating(true)
+    setTimeout(() => setIsNavigating(false), 500)
+  }
 
   useEffect(() => {
     const handleHash = () => {
       const page = parsePageFromHash()
+      triggerTransition()
       setCurrentPage(page)
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
@@ -67,6 +74,7 @@ function App() {
   }, [])
 
   const navigateTo = (pageId) => {
+    triggerTransition()
     setCurrentPage(pageId)
     window.location.hash = `#${pageId}`
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -76,8 +84,11 @@ function App() {
 
   return (
     <>
+      {/* Route progress indicator for page reload/navigation */}
+      <div className={`route-progress-bar ${isNavigating ? 'active' : ''}`} aria-hidden="true" />
+
       <Navbar activePage={currentPage} onNavigate={navigateTo} />
-      <main>
+      <main key={currentPage} className="page-transition-wrap">
         {!isSubpage && (
           <>
             <HeroSection onNavigate={navigateTo} />
