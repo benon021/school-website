@@ -82,6 +82,12 @@ export default function HeroSection({ onNavigate }) {
 
   return (
     <section className="hero-profile-section" id="home">
+      {/* Background Campus Image with Soft Glassmorphic Overlay */}
+      <div className="hero-bg-image-wrap" aria-hidden="true">
+        <img src={images.campus} alt="" className="hero-bg-image" />
+        <div className="hero-bg-overlay" />
+      </div>
+
       {/* Background ambient glow */}
       <div className="hero-ambient-glow" aria-hidden="true" />
 
