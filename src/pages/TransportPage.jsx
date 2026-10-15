@@ -6,7 +6,6 @@ import {
   MapPin,
   CheckCircle,
   Phone,
-  AlertCircle,
   Users,
   Compass,
 } from 'lucide-react'

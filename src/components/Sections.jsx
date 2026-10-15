@@ -3,7 +3,6 @@ import { images, pillars, lifeCards, programs } from '../data'
 export function Hero() {
   return (
     <section className="hero" id="home">
-      <div className="hero-bg" style={{ backgroundImage: `url(${images.hero})` }} aria-hidden="true" />
       <div className="container hero-content hero-anim">
         <span className="eyebrow light">Welcome to Excellence</span>
         <h1>
@@ -58,10 +57,10 @@ export function About() {
       <div className="container about-split">
         <div className="about-media reveal">
           <div className="main">
-            <img src={images.about} alt="Learners working together on a drawing activity in class" loading="lazy" />
+            <img src={images.about} alt="Learners working together on a drawing activity in class" loading="lazy" decoding="async" />
           </div>
           <div className="inset">
-            <img src={images.campus} alt="Mt. Elgon Academy campus buildings and green lawns" loading="lazy" />
+            <img src={images.campus} alt="Mt. Elgon Academy campus buildings and green lawns" loading="lazy" decoding="async" />
           </div>
           <div className="floating">
             <div>
@@ -116,7 +115,7 @@ export function SchoolLife() {
             return (
               <article className="life-card reveal" key={title} style={{ '--delay': `${i * 120}ms` }}>
                 <div className="life-media">
-                  <img src={image} alt={title} loading="lazy" />
+                  <img src={image} alt={title} loading="lazy" decoding="async" />
                 </div>
                 <div className="life-body">
                   <h3>{title}</h3>
@@ -148,7 +147,7 @@ export function Admissions() {
             <div className="reveal" key={title} style={{ '--delay': `${i * 120}ms` }}>
               <article className={`program ${tone} ${featured ? 'featured' : ''}`} style={{ height: '100%' }}>
                 <div className="program-media">
-                  <img src={image} alt={`${title} learners`} loading="lazy" />
+                  <img src={image} alt={`${title} learners`} loading="lazy" decoding="async" />
                   {featured && <span className="tag">Most Popular</span>}
                 </div>
                 <div className="program-body">

@@ -11,6 +11,10 @@ import FacilitiesPage from './pages/FacilitiesPage'
 import AdmissionsPage from './pages/AdmissionsPage'
 import AboutPage from './pages/AboutPage'
 import ContactPage from './pages/ContactPage'
+import AnnouncementsPage from './pages/AnnouncementsPage'
+import AdminPortal from './pages/admin/AdminPortal'
+import { ContentProvider } from './context/ContentContext'
+import { AuthProvider } from './context/AuthContext'
 import useReveal from './hooks/useReveal'
 
 const VALID_SUBPAGES = [
@@ -22,6 +26,8 @@ const VALID_SUBPAGES = [
   'admissions',
   'about',
   'contact',
+  'announcements',
+  'admin',
 ]
 
 function parsePageFromHash() {
@@ -29,6 +35,17 @@ function parsePageFromHash() {
   const hash = window.location.hash.replace(/^#\/?/, '').toLowerCase()
   if (!hash || hash === 'home') return 'home'
 
+  if (hash.startsWith('admin') || hash.startsWith('login') || hash.startsWith('portal')) {
+    return 'admin'
+  }
+  if (
+    hash.startsWith('announce') ||
+    hash.startsWith('notice') ||
+    hash.startsWith('alert') ||
+    hash.startsWith('circular')
+  ) {
+    return 'announcements'
+  }
   if (hash.startsWith('transport')) return 'transport'
   if (hash.startsWith('academic')) return 'academics'
   if (hash.startsWith('board')) return 'boarding'
@@ -51,7 +68,9 @@ function parsePageFromHash() {
   return 'home'
 }
 
-function App() {
+
+
+function MainApp() {
   const [currentPage, setCurrentPage] = useState(parsePageFromHash)
   const [isNavigating, setIsNavigating] = useState(false)
   useReveal(currentPage)
@@ -78,6 +97,11 @@ function App() {
     setCurrentPage(pageId)
     window.location.hash = `#${pageId}`
     window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // If viewing the Admin CMS Portal, render it standalone
+  if (currentPage === 'admin') {
+    return <AdminPortal onBackToSite={() => navigateTo('home')} />
   }
 
   const isSubpage = VALID_SUBPAGES.includes(currentPage)
@@ -110,10 +134,19 @@ function App() {
         {currentPage === 'admissions' && <AdmissionsPage onNavigate={navigateTo} />}
         {currentPage === 'about' && <AboutPage onNavigate={navigateTo} />}
         {currentPage === 'contact' && <ContactPage onNavigate={navigateTo} />}
+        {currentPage === 'announcements' && <AnnouncementsPage onNavigate={navigateTo} />}
       </main>
       <Footer onNavigate={navigateTo} />
     </>
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <AuthProvider>
+      <ContentProvider>
+        <MainApp />
+      </ContentProvider>
+    </AuthProvider>
+  )
+}

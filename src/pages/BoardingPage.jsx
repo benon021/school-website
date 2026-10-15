@@ -1,6 +1,9 @@
 import { images } from '../data'
+import { useContent } from '../context/ContentContext'
 
 export default function BoardingPage({ onNavigate }) {
+  const { getSection } = useContent()
+  const dynamicHero = getSection('boarding', 'overview', {})
   const boardingPillars = [
     {
       title: 'Comfortable Modern Dormitories',
@@ -34,7 +37,10 @@ export default function BoardingPage({ onNavigate }) {
   return (
     <div className="subpage boarding-page">
       <section className="subpage-hero">
-        <div className="subpage-hero-bg" style={{ backgroundImage: `url(${images.campus})` }} />
+        <div
+          className="subpage-hero-bg"
+          style={{ backgroundImage: `url(${dynamicHero.image_url || images.campus})` }}
+        />
         <div className="container subpage-hero-content">
           <nav className="breadcrumbs" aria-label="Breadcrumb">
             <button type="button" onClick={() => onNavigate('home')} className="crumb-link">
@@ -45,11 +51,11 @@ export default function BoardingPage({ onNavigate }) {
             <span className="crumb-sep">/</span>
             <span className="crumb-current">Boarding & Dining</span>
           </nav>
-          <span className="eyebrow red">Home Away From Home</span>
-          <h1>Boarding Life & Pastoral Care</h1>
+          <span className="eyebrow red">{dynamicHero.subtitle || 'Home Away From Home'}</span>
+          <h1>{dynamicHero.title || 'Boarding Life & Pastoral Care'}</h1>
           <p className="subpage-lead">
-            A serene, supportive, and disciplined residential environment in Central Trans Nzoia
-            where boys and girls build lifelong friendships, self-reliance, and moral character.
+            {dynamicHero.body_text ||
+              'A serene, supportive, and disciplined residential environment in Central Trans Nzoia where boys and girls build lifelong friendships, self-reliance, and moral character.'}
           </p>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { CheckCircle } from 'lucide-react'
 import { images } from '../data'
 
 export default function ContactPage({ onNavigate }) {

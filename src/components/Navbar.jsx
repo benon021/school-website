@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ChevronDown, Menu, X } from 'lucide-react'
+import { useContent } from '../context/ContentContext'
+import Crest from './Crest'
 
 export function Brand({ onNavigate }) {
   const handleClick = (e) => {
@@ -9,28 +11,39 @@ export function Brand({ onNavigate }) {
   }
 
   return (
-    <a
-      href="#home"
-      onClick={handleClick}
-      className="brand"
-      aria-label="Mt. Elgon Academy Primary School home"
-    >
-      <span className="crest" aria-hidden="true">
-        MEA
-      </span>
-      <span className="brand-text">
-        <strong>Mt. Elgon Academy</strong>
-        <span>Primary School</span>
-      </span>
-    </a>
+    <div className="brand">
+      <a
+        href="#home"
+        onClick={handleClick}
+        className="brand-logo-link"
+        aria-label="Mt. Elgon Academy Logo"
+        title="Mt. Elgon Academy Home"
+      >
+        <span className="brand-logo-wrap">
+          <Crest size={35} clearBg={true} className="brand-crest" />
+        </span>
+      </a>
+      <a
+        href="#home"
+        onClick={handleClick}
+        className="brand-text-link"
+        aria-label="Mt. Elgon Academy Home"
+      >
+        <span className="brand-text">
+          <strong>Mt. Elgon Academy</strong>
+        </span>
+      </a>
+    </div>
   )
 }
 
 export default function Navbar({ activePage = 'home', onNavigate }) {
+  const { announcements } = useContent()
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const isSchoolLifeActive = ['transport', 'boarding', 'cocurricular'].includes(activePage)
   const [dropdownOpen, setDropdownOpen] = useState(isSchoolLifeActive)
+  const hasNotices = announcements?.some((a) => a.is_active !== false)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -136,7 +149,7 @@ export default function Navbar({ activePage = 'home', onNavigate }) {
                 >
                   <span>School Life</span>
                   <ChevronDown
-                    size={16}
+                    size={14}
                     className={`dropdown-chevron ${dropdownOpen ? 'rotated' : ''}`}
                   />
                 </button>
@@ -221,6 +234,18 @@ export default function Navbar({ activePage = 'home', onNavigate }) {
                 </a>
               </li>
 
+              <li>
+                <a
+                  href="#announcements"
+                  className={`nav-link ${activePage === 'announcements' ? 'active' : ''}`}
+                  id="nav-announcements"
+                  onClick={(e) => handleNav('announcements', e)}
+                >
+                  <span>Notices</span>
+                  {hasNotices && <span className="nav-notice-indicator" />}
+                </a>
+              </li>
+
               <li className="nav-cta-item">
                 <a
                   href="#admissions"
@@ -241,7 +266,7 @@ export default function Navbar({ activePage = 'home', onNavigate }) {
             aria-expanded={mobileMenuOpen}
             onClick={() => setMobileMenuOpen((o) => !o)}
           >
-            {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+            {mobileMenuOpen ? <X size={18} /> : <Menu size={18} />}
           </button>
         </nav>
       </header>

@@ -1,4 +1,4 @@
-export default function Crest({ size = 140, className = '' }) {
+export default function Crest({ size = 140, className = '', clearBg = false }) {
   return (
     <div
       className={`school-crest-wrap ${className}`}
@@ -43,7 +43,14 @@ export default function Crest({ size = 140, className = '' }) {
         </defs>
 
         {/* Outer White Base Circle */}
-        <circle cx="100" cy="100" r="96" fill="#FFFFFF" stroke="#E2E8F0" strokeWidth="2" />
+        <circle
+          cx="100"
+          cy="100"
+          r="96"
+          fill={clearBg ? 'none' : '#FFFFFF'}
+          stroke={clearBg ? 'none' : '#E2E8F0'}
+          strokeWidth="2"
+        />
 
         {/* Outer Navy Ring */}
         <circle cx="100" cy="100" r="91" fill="none" stroke="url(#crestNavy)" strokeWidth="6" />
@@ -52,7 +59,7 @@ export default function Crest({ size = 140, className = '' }) {
         <circle cx="100" cy="100" r="85" fill="none" stroke="url(#crestGold)" strokeWidth="2" strokeDasharray="3 2" />
 
         {/* Inner Cream Field */}
-        <circle cx="100" cy="100" r="82" fill="#F8FAFC" />
+        <circle cx="100" cy="100" r="82" fill={clearBg ? 'none' : '#F8FAFC'} />
 
         {/* TOP RIBBON (Mt. Elgon Academy) */}
         <g filter="url(#crestShadow)">

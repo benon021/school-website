@@ -1,9 +1,19 @@
 import { useState } from 'react'
 import Crest from './Crest'
 import { images } from '../data'
+import { useContent } from '../context/ContentContext'
+import { Bell, ChevronRight } from 'lucide-react'
+import EditableText from './admin/EditableText'
+import EditableImage from './admin/EditableImage'
 
 export default function HeroSection({ onNavigate }) {
+  const { settings, announcements } = useContent()
   const [showMore, setShowMore] = useState(false)
+
+  // Active announcement from Supabase or fallback
+  const activeNotice = announcements?.find((a) => a.is_active !== false)
+  const noticeLabel = activeNotice?.badge || activeNotice?.title || 'Admissions 2025/2026'
+  const noticeBody = activeNotice?.message || 'Ongoing interviews for Early Years, Primary & Junior Secondary • Door-to-stage school transport available across Kitale & Saboti.'
 
   const storyHighlights = [
     {
@@ -82,28 +92,37 @@ export default function HeroSection({ onNavigate }) {
 
   return (
     <section className="hero-profile-section" id="home">
-      {/* Background Campus Image with Soft Glassmorphic Overlay */}
-      <div className="hero-bg-image-wrap" aria-hidden="true">
-        <img src={images.campus} alt="" className="hero-bg-image" />
-        <div className="hero-bg-overlay" />
-      </div>
 
       {/* Background ambient glow */}
       <div className="hero-ambient-glow" aria-hidden="true" />
 
-      {/* Top Announcement Bar */}
+      {/* Vibrating Announcement Bar triggering full Announcements Page */}
       <div className="container hero-notice-container">
-        <div className="hero-notice-banner">
-          <span className="notice-text">
-            <strong>Admissions 2025/2026:</strong> Ongoing interviews for Early Years, Primary & Junior
-            Secondary • Door-to-stage school transport available across Kitale & Saboti.
-          </span>
+        <div
+          className="hero-notice-banner interactive-alert"
+          onClick={() => onNavigate('announcements')}
+          role="button"
+          tabIndex={0}
+          title="Click to see all school announcements"
+        >
+          <div className="notice-left-wrap">
+            <span className="vibrating-bell-wrap" aria-hidden="true">
+              <Bell size={16} className="vibrating-bell-icon" />
+            </span>
+            <span className="notice-badge-chip">{noticeLabel}</span>
+            <span className="notice-text-clamp">{noticeBody}</span>
+          </div>
+
           <button
             type="button"
-            onClick={() => onNavigate('admissions')}
-            className="notice-link"
+            onClick={(e) => {
+              e.stopPropagation()
+              onNavigate('announcements')
+            }}
+            className="notice-view-all-btn"
           >
-            Apply Online
+            <span>See Notices</span>
+            <ChevronRight size={14} />
           </button>
         </div>
       </div>
@@ -116,19 +135,15 @@ export default function HeroSection({ onNavigate }) {
           </div>
 
           <h1>
-            Welcome to <span className="accent-text">Mt. Elgon</span>
-            <br />
-            Academy Primary
+            Welcome to <span className="accent-text">{settings.school_name || 'Mt. Elgon Academy'}</span>
           </h1>
 
           <p className="hero-lead">
-            More than just a place to get an education — a nurturing Christian-values primary academy where
-            every child is known, cherished, and empowered to excel.
+            {settings.hero_headline || 'More than just a place to get an education — a nurturing Christian-values primary academy where every child is known, cherished, and empowered to excel.'}
           </p>
 
           <p className="hero-sublead">
-            Located in Central Trans Nzoia near Kitale Town, Saboti Constituency. Offering CBC curriculum,
-            exceptional boarding facilities, door-to-stage bus transit, and rich co-curricular programs.
+            {settings.hero_subheadline || 'Located in Central Trans Nzoia near Kitale Town, Saboti Constituency. Offering CBC curriculum, exceptional boarding facilities, door-to-stage bus transit, and rich co-curricular programs.'}
           </p>
 
           <div className="hero-actions-row">
@@ -198,6 +213,8 @@ export default function HeroSection({ onNavigate }) {
               src={images.campus}
               alt="Mt. Elgon Academy staff and learners on lush green campus grounds"
               className="cover-img"
+              fetchPriority="high"
+              decoding="async"
             />
             <div className="cover-overlay" />
             <span className="cover-location-tag">Kitale, Trans Nzoia</span>

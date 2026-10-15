@@ -5,12 +5,12 @@ export default function useReveal(dep) {
   useEffect(() => {
     if (typeof window === 'undefined') return
 
-    // Immediately show elements already in or near viewport
+    // Pre-trigger elements ahead of viewport so users don't scroll into blank space
     const revealVisible = () => {
       const els = document.querySelectorAll('.reveal')
       els.forEach((el) => {
         const rect = el.getBoundingClientRect()
-        if (rect.top <= window.innerHeight + 120) {
+        if (rect.top <= window.innerHeight + 350) {
           el.classList.add('is-visible')
         }
       })
@@ -33,7 +33,7 @@ export default function useReveal(dep) {
           }
         })
       },
-      { threshold: 0.05, rootMargin: '50px 0px 50px 0px' },
+      { threshold: 0.01, rootMargin: '350px 0px 350px 0px' },
     )
 
     els.forEach((el) => {

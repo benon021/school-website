@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { images, facilities, extras, stats, testimonials, navLinks } from '../data'
+import { images, facilities, extras, stats, testimonials } from '../data'
 import { Brand } from './Navbar'
+import { useContent } from '../context/ContentContext'
 
 export function Facilities() {
   return (
@@ -18,7 +19,7 @@ export function Facilities() {
               key={title}
               style={{ '--delay': `${i * 100}ms`, margin: 0 }}
             >
-              <img src={image} alt={title} loading="lazy" />
+              <img src={image} alt={title} loading="lazy" decoding="async" />
               <figcaption className="bento-caption">
                 <div>
                   <h3>{title}</h3>
@@ -126,7 +127,7 @@ export function CTA() {
             </a>
           </div>
           <div className="cta-media">
-            <img src={images.cta} alt="Colourful stack of books" loading="lazy" />
+            <img src={images.cta} alt="Colourful stack of books" loading="lazy" decoding="async" />
           </div>
         </div>
       </div>
@@ -135,6 +136,8 @@ export function CTA() {
 }
 
 export function Footer({ onNavigate }) {
+  const { settings } = useContent()
+
   const handleNav = (pageId, e) => {
     if (e) e.preventDefault()
     if (onNavigate) {
@@ -153,6 +156,8 @@ export function Footer({ onNavigate }) {
     { label: 'Admissions & Fees', id: 'admissions' },
     { label: 'About Us & History', id: 'about' },
     { label: 'Contact & Location', id: 'contact' },
+    { label: 'School Circulars & Notices 🔔', id: 'announcements' },
+    { label: 'Staff / Admin Portal 🔒', id: 'admin' },
   ]
 
   return (
@@ -185,11 +190,11 @@ export function Footer({ onNavigate }) {
             <ul className="contact-list">
               <li>
                 <span>
-                  Central Trans Nzoia in or near Kitale Town, Saboti Constituency, Trans Nzoia County, Kenya
+                  {settings.location || 'Central Trans Nzoia in or near Kitale Town, Saboti Constituency, Trans Nzoia County, Kenya'}
                 </span>
               </li>
-              <li>P.O. Box – 30200 Kitale, Kenya</li>
-              <li>Kitale, Trans-Nzoia County, 30200, Kenya</li>
+              <li>Phone: {settings.primary_phone || '+254 700 000 000'}</li>
+              <li>Email: {settings.email || 'info@mtelgonacademy.ac.ke'}</li>
               <li>Mon – Fri: 7:30am – 5:00pm | Sat: 8:00am – 1:00pm</li>
             </ul>
           </div>
